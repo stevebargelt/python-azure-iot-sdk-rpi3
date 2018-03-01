@@ -1,0 +1,20 @@
+language: python
+sudo: required
+services:
+- docker
+before_install:
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker run --rm --privileged multiarch/qemu-user-static:register
+install:
+- docker build --rm --no-cache -t stevebargelt/python-azure-iot-sdk-rpi3 .
+- docker push stevebargelt/python-azure-iot-sdk-rpi3
+script: true
+notifications:
+  slack:
+    rooms:
+      secure: nOj00Fk362WQioGKmxvSh0kWykSN7OLHs0qUr746Lc5HqpUU6+MNatVpe9oBYGI/5kK4yVV21FCjv5ip11zHPiKy4XVMyQlFQBRGVArgl1l5AXC0p7Izeb2jKxhjApvVldVeoe+TpvS1rQwPsLTbkwBGMLht2Zi4zinhKhTs5Cxl3GyeK4uXpw1dE10jQFHq4cBwPSOYWt+T52NxsJnorDAzxy3/rEUCn8CwDN7UOGOiMB9fimYtb+ZMsE3fH+NHSJc7rw/b6eGnXhObHJlEHr0AoJD22cetYpgMF4cTjjxONYQoKU7dHL8ouECussWA8IaJhnW+a4zCu+WweDxtxGS8DQvgWbSjXT6xeLBPlzJIKp9X/sdJg801kQDTirP3EGKO96Rgvos25nKURDXM+GELy9IheUdgRyfVPZO1t4aJrVmB1E7z2wCUFhB3UD0BAgG/blYQDsjCUsJTTDv48qrTP5j4ybM+Jja0Hozz2pXiYZICMTF6JIRTmUzXvV2TgcNbskU7ktwkIY5mJg0uBoHnpScxLO6z7c2VhGJrBHMmmjNU+mhBdHI+Vx2Meg8lDndsLmlfkWbamekoxGpvWPXq1Mn78pLKsOV7p1orC+Z2Tl8ZalnsfTv7kMAMmCfj98/K62vsJ6sFSU1JUu2/RULlOmcxBtjoRqQRgxFMCjo=
+    template:
+    - Status=%{result}, Job=%{repository_name}, Build=%{build_number}, URL=%{build_url},
+      HUB=https://hub.docker.com/r/stevebargelt/python-azure-iot-sdk-rpi3/
+    on_success: change
+    on_failure: always
