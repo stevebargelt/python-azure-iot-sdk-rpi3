@@ -1,4 +1,4 @@
-FROM resin/raspbian:stretch
+FROM resin/raspberrypi3-debian:stretch
 
 LABEL maintainer="steve@bargelt.com"
 
